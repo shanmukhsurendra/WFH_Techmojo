@@ -1,0 +1,24 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+	<h2> List of photos from mongo!!! </h2>
+		<table>
+		    <thead>
+		        <tr>
+		            <th> FileName </th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="file : ${allPhotos}">
+		            <td><a th:href="'/photos/' + ${file.getId()}" target="_blank"><span th:text= "${file.getTitle()}"> </span></a></td>
+		        </tr>
+		    </tbody>
+		</table>
+			</br>
+
+		 </br>
+
+		<a href="/">
+			Back to home page
+		</a>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<h1>View Video</h1>
+	Title: <span th:text="${title}">title</span>
+	<br/>
+	<br/>
+	
+	<video width="400" controls>
+    	<source th:src="${url}" />
+  	</video>
+  	</br>
+  	
+  	
+  	</br>
+	<a href="/files">
+		Back to videos
+	</a>
+	
+  	<br/> <br/>
+	<a href="/">Back to home page</a>
+</body>
+</html>

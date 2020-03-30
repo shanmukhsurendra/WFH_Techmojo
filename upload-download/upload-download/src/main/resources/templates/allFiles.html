@@ -1,0 +1,28 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+	<h2> List of files from mongo!!! </h2>
+		<table>
+		    <thead>
+		        <tr>
+		            <th> Content type </th>
+		            <th> FileName </th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="file : ${allFiles}">
+		            <td><span th:text="${file.getMetadata().get('_contentType').toString()}"></span></td>
+		
+		            <td><a th:href="'/files/' + ${file.getObjectId()}" target="_blank"><span th:text= "${file.getFilename()}"> </span></a></td>
+		        </tr>
+		    </tbody>
+		</table>
+		
+		</br>
+
+		</br>
+
+		<a href="/">
+			Back to home page
+		</a>
+	</body>
+</html>

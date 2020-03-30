@@ -1,0 +1,18 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<h1>Upload new file</h1>
+<form method="POST" action="/files/add" enctype="multipart/form-data">
+
+	<br/>
+	Upload file :<input type="file" name="file" accept="*/*" />
+	<br/>
+	<br/>
+    <input type="submit" value="Upload" />
+</form>
+	<a href="/">
+		Back to home page
+	</a>
+
+</body>
+</html>

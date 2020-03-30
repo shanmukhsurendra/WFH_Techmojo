@@ -1,0 +1,17 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<h1>Upload new Photo</h1>
+<form method="POST" action="/photos/add" enctype="multipart/form-data">
+	
+	<br/>
+	Image:<input type="file" name="image" accept="image/*" />
+	<br/>
+	<br/>
+    <input type="submit" value="Upload" />
+</form>
+	<a href="/">
+		Back to home page
+	</a>
+</body>
+</html>
