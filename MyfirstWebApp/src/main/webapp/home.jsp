@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-i love myself
+       i love ${name}
 </body>
 </html>
