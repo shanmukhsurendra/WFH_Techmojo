@@ -2,8 +2,10 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
@@ -18,16 +20,21 @@ public class AlienController {
 		return "home.jsp";
 	}
 	
-	@RequestMapping("/addAlien")
-	public String addAlien(Alien alien) {
-		arep.save(alien);
-		return "home.jsp";
+//	@RequestMapping("/addAlien")
+//	public String addAlien(Alien alien) {
+//		arep.save(alien);
+//		return "home.jsp";
+//	}
+	@RequestMapping("/aliens")
+	@ResponseBody
+	public String getAliens() {
+		
+		return arep.findAll().toString();
 	}
-	@RequestMapping("/getAlien")
-	public ModelAndView getAlien(@RequestParam int aid) {
-		ModelAndView mv = new ModelAndView("show.jsp");
-		Alien al = arep.findById(aid).orElse(null);
-		mv.addObject(al);
-		return mv;
+	@RequestMapping("/alien/{aid}")
+	@ResponseBody
+	public String getAlien(@PathVariable("aid") int aid) {
+		
+		return arep.findById(aid).toString();
 	}
 }
