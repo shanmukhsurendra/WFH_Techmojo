@@ -51,6 +51,9 @@ public class UserController {
 	public String transaction(@RequestParam String cardNum, @RequestParam String expiryDate,@RequestParam int amount,@RequestParam String name) {
 		String message = "";
 		CreditCard card = cdao.findByCardNum(cardNum);
+		if(!card.getCardStatus().equals("active")) {
+			return "tansaction not possible please check your card status";
+		}
 		int cash = card.getCreditLimit()-amount;
 		if(cash > 0 && cash > card.getCashLimit()) {
 			card.setCreditLimit(cash);
@@ -71,6 +74,9 @@ public class UserController {
 	public String withdrawl(@RequestParam String cardNum,@RequestParam int amount) {
 		String message = "";
 		CreditCard card = cdao.findByCardNum(cardNum);
+		if(!card.getCardStatus().equals("active")) {
+			return "tansaction not possible please check your card status";
+		}
 		int cash = card.getCashLimit()-amount;
 		if(cash > 0) {
 			card.setCashLimit(cash);
@@ -86,6 +92,22 @@ public class UserController {
 	public String eomp(@RequestParam String cardNum) {
 //		String message = "";
 		CreditCard card = cdao.findByCardNum(cardNum);
+		if(card.getMinimumDue() > 0) {
+			if(card.getLateCharges() >= 3) {
+				card.setCardStatus("Delinquent");
+				cdao.save(card);
+				int totalOne = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue();
+				totalOne += totalOne/50;
+				totalOne = totalOne/4;
+				
+				return "card is in delinquent status please clear shown to amount get card into active status-->" + totalOne;
+			} else {
+				card.setLateCharges(card.getLateCharges()+1);
+				card.setMinimumDue(card.getMinimumDue() + 100);
+				cdao.save(card);
+			}
+		}
+		
 		int total = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue();
 		total += total/50;
 		card.setPastCashDue(card.getPastCashDue() + card.getCurrentCashDue());
@@ -112,17 +134,71 @@ public class UserController {
 		return "amount to be paid -->" + total + "\n" +"minimum amount to be paid to avoid late charges -->" + min 
 				+ "\n" + "overall cashdue-->" + overallCashDue + "\n" + "overall creditdue-->" + overallCreditDue;
 	}
-//	@PutMapping("/eomp")
-//	public String eomp(@RequestParam String cardNum) {
-////		String message = "";
-//		CreditCard card = cdao.findByCardNum(cardNum);
-//		int total = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue();
-//		total += total/50;
-//		card.setPastCashDue(card.getPastCashDue() + card.getCurrentCashDue());
-//		card.setCurrentCashDue(0);
-//		card.setPastCreditDue(card.getPastCreditdDue() + card.getCurrentCreditDue());
-//		card.setCurrentCreditDue(0);
-//		cdao.save(card);
-//		return "amount to be paid" + total;
-//	}
+	@PutMapping("/payment")
+	public String payments(@RequestParam String cardNum, @RequestParam int amount) {
+//		String message = "";
+		CreditCard card = cdao.findByCardNum(cardNum);
+		if (amount < card.getMinimumDue()) {
+			return "should clear atleast minimumDue" + card.getMinimumDue();
+		} else {
+			amount = amount - card.getMinimumDue();
+			card.setMinimumDue(0);
+		}
+		if(amount > card.getPastCashDue()) {
+			amount = amount - card.getPastCashDue();
+			card.setCashLimit(card.getCashLimit() + card.getPastCashDue());
+			card.setPastCashDue(0);
+		} else {
+			card.setPastCashDue(card.getPastCashDue()-amount);
+			card.setCashLimit(card.getCashLimit() + amount);
+			amount = 0;
+		}
+		if(amount > card.getPastCreditDue()) {
+			amount = amount - card.getPastCreditDue();
+			card.setCreditLimit(card.getCreditLimit() + card.getPastCreditDue());
+			card.setPastCreditDue(0);
+		} else {
+			card.setPastCreditDue(card.getPastCreditDue()-amount);
+			card.setCreditLimit(card.getCreditLimit() + amount);
+			amount = 0;
+		}
+		if(amount > card.getCurrentCashDue()) {
+			amount = amount - card.getCurrentCashDue();
+			card.setCashLimit(card.getCashLimit() + card.getCurrentCashDue());
+			card.setCurrentCashDue(0);
+		} else {
+			card.setCurrentCashDue(card.getCurrentCashDue()-amount);
+			card.setCashLimit(card.getCashLimit() + amount);
+			amount = 0;
+		}
+		if(amount > card.getCurrentCreditDue()) {
+			amount = amount - card.getCurrentCreditDue();
+			card.setCreditLimit(card.getCreditLimit() + card.getCurrentCreditDue());
+			card.setCurrentCreditDue(0);
+		} else {
+			card.setCurrentCreditDue(card.getCurrentCreditDue()-amount);
+			card.setCreditLimit(card.getCreditLimit() + amount);
+			amount = 0;
+		}
+		if(card.getMinimumDue() == 0) {
+			card.setLateCharges(0);
+			card.setCardStatus("active");
+		}
+		cdao.save(card);
+		return "payment successfull";
+	}
+	@PutMapping("/closeCard")
+	public String closeCard(@RequestParam String cardNum) {
+		CreditCard card = cdao.findByCardNum(cardNum);
+		int total = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue() + card.getMinimumDue();
+		if(total == 0 && card.getCardStatus().equals("active")) {
+			card.setCardStatus("closed");
+			cdao.save(card);
+			return "card closed";
+		}
+		if(!card.getCardStatus().equals("active")) {
+			return "please check card status";
+		}
+		return "transaction unseccusful";
+	}
 }
