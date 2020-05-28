@@ -50,7 +50,14 @@ public class UserController {
 	@PutMapping("/transaction")
 	public String transaction(@RequestParam String cardNum, @RequestParam String expiryDate,@RequestParam int amount,@RequestParam String name) {
 		String message = "";
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
+		if(!card.getExpiryDate().equals(expiryDate)) {
+			return "check expiry date";
+		}
+		if (!card.getName().equals(name)) {
+			return "check your name";
+		}
 		if(!card.getCardStatus().equals("active")) {
 			return "tansaction not possible please check your card status";
 		}
@@ -69,10 +76,15 @@ public class UserController {
 		}
 		cdao.save(card);
 		return message;
+		} catch (Exception e) {
+			return "check your card number";
+		}
+		
 	}
 	@PutMapping("/withdrawl")
 	public String withdrawl(@RequestParam String cardNum,@RequestParam int amount) {
 		String message = "";
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
 		if(!card.getCardStatus().equals("active")) {
 			return "tansaction not possible please check your card status";
@@ -87,10 +99,14 @@ public class UserController {
 		}
 		cdao.save(card);
 		return message;
+		} catch(Exception e) {
+			return "check your card number";
+		}
 	}
 	@PutMapping("/eomp")
 	public String eomp(@RequestParam String cardNum) {
 //		String message = "";
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
 		if(card.getMinimumDue() > 0) {
 			if(card.getLateCharges() >= 3) {
@@ -100,7 +116,7 @@ public class UserController {
 				totalOne += totalOne/50;
 				totalOne = totalOne/4;
 				
-				return "card is in delinquent status please clear shown to amount get card into active status-->" + totalOne;
+				return "card is in delinquent status please clear shown to amount get card into active statu)s-->" + totalOne;
 			} else {
 				card.setLateCharges(card.getLateCharges()+1);
 				card.setMinimumDue(card.getMinimumDue() + 100);
@@ -117,12 +133,16 @@ public class UserController {
 		card.setMinimumDue(total/20);
 		cdao.save(card);
 		return "amount to be paid" + total;
+		} catch (Exception e){
+			return "check entered details";
+		}
 	}
 	//this method is to get the balance for certain card which takes card number as input parameter and
 	//gives balances to be paid.
 	@RequestMapping("/balanceEnquiry")
 	public String balanceEnquiry(@RequestParam String cardNum) {
 //		String message = "";
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
 		int total = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue();
 		total += total/50;
@@ -133,10 +153,15 @@ public class UserController {
 		
 		return "amount to be paid -->" + total + "\n" +"minimum amount to be paid to avoid late charges -->" + min 
 				+ "\n" + "overall cashdue-->" + overallCashDue + "\n" + "overall creditdue-->" + overallCreditDue;
+		} catch (Exception e) {
+			return "check entered details";
+		}
 	}
+		
 	@PutMapping("/payment")
 	public String payments(@RequestParam String cardNum, @RequestParam int amount) {
 //		String message = "";
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
 		if (amount < card.getMinimumDue()) {
 			return "should clear atleast minimumDue" + card.getMinimumDue();
@@ -186,9 +211,13 @@ public class UserController {
 		}
 		cdao.save(card);
 		return "payment successfull";
+		}catch(Exception e) {
+			return "check enterd card details";
+		}
 	}
 	@PutMapping("/closeCard")
 	public String closeCard(@RequestParam String cardNum) {
+		try {
 		CreditCard card = cdao.findByCardNum(cardNum);
 		int total = card.getCurrentCashDue() + card.getCurrentCreditDue() + card.getPastCashDue() + card.getPastCreditdDue() + card.getMinimumDue();
 		if(total == 0 && card.getCardStatus().equals("active")) {
@@ -200,5 +229,8 @@ public class UserController {
 			return "please check card status";
 		}
 		return "transaction unseccusful";
+		} catch (Exception e) {
+			return "check enetered card details";
+		}
 	}
 }
