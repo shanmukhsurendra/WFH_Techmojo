@@ -1,7 +1,9 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,19 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.CreditCard;
+import com.example.demo.CreditCardDao;
+import com.example.demo.User;
+import com.example.demo.UserDao;
+
 @RestController
-@RequestMapping("/user")
+//@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserDao dao;
 	@Autowired
 	private CreditCardDao cdao;
-
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	@PostMapping("/applyCreditCard")
 	public String applyCreditCard(@RequestBody User user) {
 		Random rand = new Random();
 //		dao.save(user);
 //		@Autowired
+		User currentUser = dao.findByName(user.getName());
+		if(currentUser != null) {
+			return "user already exists with this data";
+		}
+//		log.info(uname + "     user name -------------------");
 		CreditCard ccard = new CreditCard();
 		if(user.getCardNum() == null) {
 			ccard.setName(user.getName());

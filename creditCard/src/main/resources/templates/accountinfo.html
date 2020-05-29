@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  </head>
+<body>
+
+<h2>List of Users</h2>
+<ul>
+	<tr>
+			<div class="card" style="width: 18rem;">
+			  <div class="card-body">
+			    <h5 class="card-title" th:text="${user.name}"></h5>
+			    <p class="card-text" th:text="${user.phoneNumber}"></p>
+			    <p class="card-text" th:text="${user.cardNum}"></p>
+			    <p class="card-text" th:text="${card.cashLimit}"></p>
+			    <p class="card-text" th:text="${card.creditLimit}"></p>
+			    <p class="card-text" th:text="${card.cashLimit}"></p>
+			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Do payment</a>
+			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Do payment</a>
+			  </div>
+			</div>
+			</br>			
+	</tr>
+</ul>
+
+
+</body>
+</html>

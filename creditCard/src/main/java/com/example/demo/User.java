@@ -3,25 +3,24 @@ package com.example.demo;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+//import lombok.AllArgsConstructor;
+//import lombok.Getter;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
+//import lombok.ToString;
 @Entity
 @Table(name = "User")
-@Getter
-@Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 //@AllArgsConstructor
-@ToString
 public class User {
 	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@GeneratedValue
 	@Column(name="id")
 	private int id;
@@ -32,6 +31,9 @@ public class User {
 	@Column(name="phoneNumber")
 	private int phoneNumber;
 	private String cardNum;
+	public User() {
+		
+	}
 	public User(String address, String name, int phoneNumber) {
 		super();
 //		this.id = id;
@@ -78,6 +80,11 @@ public class User {
 	}
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", address=" + address + ", name=" + name + ", phoneNumber=" + phoneNumber
+				+ ", cardNum=" + cardNum + "]";
 	}
 	
 //	@Autowired
