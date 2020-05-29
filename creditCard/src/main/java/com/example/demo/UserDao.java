@@ -10,4 +10,6 @@ public interface UserDao extends CrudRepository<User, Integer>{
 
 	int findByPhoneNumber(int phoneNumber);
 
+	User findByCardNum(String cardNum);
+
 }

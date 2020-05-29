@@ -11,19 +11,28 @@
   </head>
 <body>
 
-<h2>List of Users</h2>
+<h2>Account Info</h2>
 <ul>
 	<tr>
 			<div class="card" style="width: 18rem;">
 			  <div class="card-body">
-			    <h5 class="card-title" th:text="${user.name}"></h5>
-			    <p class="card-text" th:text="${user.phoneNumber}"></p>
-			    <p class="card-text" th:text="${user.cardNum}"></p>
-			    <p class="card-text" th:text="${card.cashLimit}"></p>
-			    <p class="card-text" th:text="${card.creditLimit}"></p>
-			    <p class="card-text" th:text="${card.cashLimit}"></p>
-			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Do payment</a>
-			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Do payment</a>
+			  <h3 class="card-title">Name: <a th:text="${user.name}"></a></h3>
+			  <h6 class="card-title">PhoneNumber: <a th:text="${user.phoneNumber}"></a></h6>
+			  <h6 class="card-title">Card Number: <a th:text="${user.cardNum}"></a></h6>
+			  <h6 class="card-title">Cash Limit: <a th:text="${card.cashLimit}"></a></h6>
+			  <h6 class="card-title">creditLimit: <a th:text="${card.creditLimit}"></a></h6>
+			  <h6 class="card-title">Past Cash Due: <a th:text="${card.pastCashDue}"></a></h6>
+			  <h6 class="card-title">Past Credit Due: <a th:text="${card.pastCreditDue}"></a></h6>
+			  <h6 class="card-title">Current Cash Due: <a th:text="${card.currentCashDue}"></a></h6>
+			  <h6 class="card-title">Current Credit Due: <a th:text="${card.currentCreditDue}"></a></h6>
+			  <h6 class="card-title">Card Status: <a th:text="${card.cardStatus}"></a></h6>
+<!-- 			    <a th:href="'/transact/' + ${user.id}" class="btn btn-primary">Do payment</a>
+ -->			    <a th:href="'/user/payment/' + ${user.cardNum}" class="btn btn-primary">Do payment</a>
+ 					<a th:href="'/user/eomp/' + ${user.cardNum}" class="btn btn-primary">Generate Bill</a>
+ 					<a th:href="'/user/transaction/' + ${user.cardNum}" class="btn btn-primary">Online transaction</a>
+ 					<a th:href="'/user/withdrawl/'" class="btn btn-primary">withdrawl</a>
+ 					<a th:href="'/'" class="btn btn-primary">Home</a>
+ 					<a th:href="'/user/closecard'" class="btn btn-primary">Home</a>
 			  </div>
 			</div>
 			</br>			

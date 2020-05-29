@@ -19,11 +19,12 @@
 			    <h5 class="card-title" th:text="${user.name}"></h5>
 			    <p class="card-text" th:text="${user.phoneNumber}"></p>
 			    <p class="card-text" th:text="${user.cardNum}"></p>
-			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Do payment</a>
+			    <a th:href="'/accountinfo/' + ${user.id}" class="btn btn-primary">Account info</a>
 			  </div>
 			</div>
 			</br>			
 	</tr>
+	<a th:href="'/user/applyCreditCard'" class="btn btn-primary">Apply Credit Card</a>
 </ul>
 
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  </head>
+<body>
+
+<h2>Bill page</h2>
+<ul>
+	<tr>
+			<div class="card" style="width: 18rem;">
+			
+			  <div class="card-body">
+			  <h1>Total amount to be paid <a th:text="${total}"></a></h1>
+			  <h1>minimum amount to be paid <a th:text="${card.minimumDue}"></a></h1>
+<!-- 			    <a th:href="'/transact/' + ${user.id}" class="btn btn-primary">Do payment</a>
+ -->			    <a th:href="'/user/payment/' + ${user.cardNum}" class="btn btn-primary">Do payment</a>
+ 					<!-- <a th:href="'/user/eomp/' + ${user.cardNum}" class="btn btn-primary">Generate Bill</a> -->
+			  </div>
+			</div>
+			</br>			
+	</tr>
+</ul>
+
+
+</body>
+</html>
